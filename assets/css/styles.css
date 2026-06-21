@@ -122,6 +122,7 @@ p { margin: 0 0 1rem; }
   padding: .55rem .7rem; border-radius: 8px;
   color: var(--charcoal); font-weight: 600; font-size: .95rem;
   background: none; border: none; cursor: pointer; font-family: inherit;
+  white-space: nowrap;
 }
 .nav-links a:hover, .nav-links .dropdown-toggle:hover { background: var(--mist); color: var(--lake-blue); text-decoration: none; }
 .nav-links a.active { color: var(--lake-blue); }
@@ -321,5 +322,4 @@ p { margin: 0 0 1rem; }
   .nav-links li.open > .dropdown-menu { display: block; }
   .grid--2, .grid--3, .grid--4 { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; gap: 2rem; }
-  .footer-grid { grid-template-columns: 1fr; }
-}
+  .footer-grid { grid-temp
