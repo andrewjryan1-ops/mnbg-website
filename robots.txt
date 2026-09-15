@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://MNBG.optimalascentgroup.com/sitemap.xml
+Sitemap: https://mnbookkeepingguys.com/sitemap.xml
