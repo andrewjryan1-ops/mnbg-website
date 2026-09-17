@@ -9,7 +9,7 @@
   --lake-blue: #1D6283;
   --north-shore: #4693B1;
   --fresh-green: #79B26B;
-  --deep-green: #3F7D3A;
+  --deep-green: #3A7335;   /* darkened from #3F7D3A: 4.4:1 -> 5.02:1 on mist (WCAG AA) */
   --charcoal: #20262C;
   --mist: #EAF2F4;
   --white: #ffffff;
@@ -91,7 +91,7 @@ p { margin: 0 0 1rem; }
 }
 .btn:hover { text-decoration: none; transform: translateY(-1px); }
 .btn--primary { background: var(--deep-green); color: #fff; }
-.btn--primary:hover { background: #356a31; box-shadow: var(--shadow-lg); }
+.btn--primary:hover { background: #2F5E27; box-shadow: var(--shadow-lg); }
 .btn--ghost { background: transparent; color: var(--lake-blue); border-color: var(--line); }
 .btn--ghost:hover { border-color: var(--lake-blue); background: var(--mist); }
 .btn--white { background: #fff; color: var(--lake-blue); }
@@ -112,7 +112,7 @@ p { margin: 0 0 1rem; }
 .brand { display: flex; align-items: center; gap: .65rem; font-weight: 800; color: var(--lake-blue); }
 .brand:hover { text-decoration: none; }
 .brand img { width: 46px; height: 46px; border-radius: 50%; }
-.brand b { font-size: 1.05rem; line-height: 1; }
+.brand b { display: block; font-size: 1.05rem; line-height: 1.1; text-transform: none; letter-spacing: -0.01em; }
 .brand span { display: block; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--deep-green); font-weight: 700; }
 
 .nav-links { display: flex; align-items: center; gap: .25rem; list-style: none; margin: 0; padding: 0; }
@@ -146,7 +146,9 @@ p { margin: 0 0 1rem; }
 }
 .dropdown-menu a { padding: .45rem .7rem; border-radius: 6px; font-weight: 500; width: 100%; }
 
-.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: .4rem; }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer;
+  padding: .6rem; min-width: 44px; min-height: 44px; align-items: center; justify-content: center;
+  flex-direction: column; border-radius: 8px; }
 .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--charcoal); margin: 5px 0; transition: .2s; }
 
 /* Hero ------------------------------------------------------------------- */
@@ -201,7 +203,9 @@ p { margin: 0 0 1rem; }
 
 /* Stat strip */
 .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; text-align: center; }
-.stat b { display: block; font-size: 2.4rem; color: var(--fresh-green); font-weight: 800; line-height: 1; }
+.stat b { display: block; font-size: 2.4rem; color: #96CC88; font-weight: 800; line-height: 1; }
+/* lighter than --fresh-green on purpose: #79B26B on Lake Blue is only 2.68:1,
+   below the 3:1 large-text minimum. #96CC88 measures 3.61:1. */
 .stat span { color: #cfe3ee; font-size: .95rem; }
 
 /* Checklist */
@@ -289,9 +293,21 @@ p { margin: 0 0 1rem; }
 .mt-2 { margin-top: 2rem; } .mt-1 { margin-top: 1rem; }
 .tag { display: inline-block; background: var(--mist); color: var(--lake-blue); font-weight: 600; font-size: .8rem; padding: .25rem .7rem; border-radius: 999px; }
 
-/* Reveal on scroll */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
-.reveal.in { opacity: 1; transform: none; }
+/* Reveal on scroll -----------------------------------------------------------
+   Scoped to .js (set by an inline script in <head> before first paint). With
+   scripts blocked or broken the content simply renders, instead of sitting at
+   opacity:0 forever. */
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.js .reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+  .card:hover, .btn:hover { transform: none; }
+}
 
 /* Responsive ------------------------------------------------------------- */
 @media (max-width: 980px) {
@@ -305,22 +321,102 @@ p { margin: 0 0 1rem; }
   .contact-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
-  .nav-toggle { display: block; }
-  .nav-links {
-    position: fixed; inset: 60px 0 auto 0; flex-direction: column; align-items: stretch;
-    background: #fff; border-bottom: 1px solid var(--line); padding: 1rem;
-    gap: .2rem; transform: translateY(-120%); transition: transform .25s ease;
-    max-height: calc(100vh - 60px); overflow-y: auto; box-shadow: var(--shadow-lg);
-  }
-  .nav-links.open { transform: translateY(0); }
-  .nav-cta { margin: .5rem 0 0; }
+  /* Base (no JS): the menu is a plain stacked list under the logo and the
+     hamburger stays hidden, because nothing could open it. */
+  .nav { flex-wrap: wrap; }
+  .nav-links { flex-direction: column; align-items: stretch; gap: .2rem; width: 100%; padding-top: .4rem; }
   .dropdown-menu {
     position: static; opacity: 1; visibility: visible; transform: none;
     box-shadow: none; border: none; border-left: 2px solid var(--line);
-    border-radius: 0; margin: .2rem 0 .4rem .7rem; display: none;
+    border-radius: 0; margin: .2rem 0 .4rem .7rem;
   }
-  .nav-links li.open > .dropdown-menu { display: block; }
+
+  /* With JS: restore the off-canvas drawer the hamburger drives. */
+  .js .nav-toggle { display: flex; }
+  .js .nav { flex-wrap: nowrap; }
+  .js .nav-links {
+    position: fixed; inset: 60px 0 auto 0; width: auto; padding: 1rem;
+    background: #fff; border-bottom: 1px solid var(--line);
+    transform: translateY(-120%); transition: transform .25s ease;
+    max-height: calc(100vh - 60px); overflow-y: auto; box-shadow: var(--shadow-lg);
+  }
+  .js .nav-links.open { transform: translateY(0); }
+  .js .dropdown-menu { display: none; }
+  .js .nav-links li.open > .dropdown-menu { display: block; }
+  .nav-cta { margin: .5rem 0 0; }
   .grid--2, .grid--3, .grid--4 { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; gap: 2rem; }
   .footer-grid { grid-template-columns: 1fr; }
 }
+
+/* v3 additions: SEO/content pass ------------------------------------------ */
+h1 .eyebrow { display: block; margin-bottom: .7rem; }
+.card a.more { font-weight: 600; }
+.article a { text-decoration: underline; text-decoration-color: rgba(29,98,131,.35); text-underline-offset: 2px; }
+.article a:hover { text-decoration-color: var(--lake-blue); }
+
+.author-box {
+  display: flex; gap: 1rem; align-items: flex-start;
+  background: var(--mist); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 1.2rem 1.4rem; margin-top: 2.5rem;
+}
+.author-box img { width: 64px; height: 64px; border-radius: 50%; flex: none; }
+.author-box b { display: block; color: var(--lake-blue); margin-bottom: .25rem; }
+.author-box p { margin: 0; font-size: .95rem; color: var(--muted); }
+
+.faq-list { display: grid; gap: .6rem; }
+.faq { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: .2rem 1.1rem; }
+.faq summary { cursor: pointer; font-weight: 700; color: var(--charcoal); padding: .8rem 0; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--deep-green); font-weight: 800; flex: none; }
+.faq[open] summary::after { content: "–"; }
+.faq p { color: var(--muted); margin: 0 0 1rem; }
+
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 1rem; }
+.steps li { counter-increment: step; display: flex; gap: 1rem; align-items: flex-start; }
+.steps li::before {
+  content: counter(step); flex: none; width: 34px; height: 34px; border-radius: 10px;
+  background: var(--lake-blue); color: #fff; font-weight: 800; display: grid; place-items: center;
+}
+.steps li b { display: block; color: var(--charcoal); }
+.steps li span { color: var(--muted); }
+
+.compare { width: 100%; border-collapse: collapse; font-size: .95rem; background: #fff; border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--soft-shadow); }
+.compare th, .compare td { text-align: left; padding: .8rem .9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.compare th { background: var(--mist); color: var(--lake-blue); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.compare td:first-child { font-weight: 700; color: var(--charcoal); }
+.compare-wrap { overflow-x: auto; }
+
+.form-note.ok { color: var(--deep-green); font-weight: 600; }
+.form-note.err { color: #a33; font-weight: 600; }
+
+/* v5 additions: accessibility pass -------------------------------------- */
+
+/* Skip link: visually hidden until focused, then pinned top-left. */
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 200;
+  background: var(--lake-blue); color: #fff; font-weight: 700;
+  padding: .8rem 1.2rem; border-radius: 0 0 var(--radius-sm) 0; text-decoration: none;
+}
+.skip-link:focus {
+  left: 0; outline: 3px solid var(--fresh-green); outline-offset: 2px; text-decoration: none;
+}
+main:focus { outline: none; }
+
+/* Footer column headings are <h2 class="footer-head"> so the document outline
+   doesn't jump h2 -> h4; they keep the small uppercase look. */
+.site-footer .footer-head {
+  color: #fff; font-size: .85rem; letter-spacing: .1em; text-transform: uppercase;
+  margin: 0 0 1rem; font-weight: 800;
+}
+
+/* Required form fields */
+.field label .req { color: #A8321F; font-weight: 700; margin-left: .15rem; }
+.form-legend { font-size: .85rem; color: var(--muted); margin: 0 0 1rem; }
+.field input:invalid:not(:placeholder-shown) { border-color: #A8321F; }
+
+/* Plain prose list (e.g. the third parties named in the privacy policy) —
+   deliberately not .checklist, whose green ticks would read as endorsements. */
+.plain-list { margin: 1rem 0 0; padding-left: 1.2rem; display: grid; gap: .7rem; }
+.plain-list li { color: #2c353d; }
+.plain-list li strong { color: var(--lake-blue); }

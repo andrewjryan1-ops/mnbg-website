@@ -1,8 +1,16 @@
+# NOTE: this file is INERT on GitHub Pages, which is where the site is hosted
+# today — GitHub Pages does not read _headers and sends no security headers at
+# all. It is kept here so the rules apply immediately if the site is ever put
+# behind Cloudflare Pages or Netlify, both of which do honour this format.
+# Until then, the only header-level protection in effect is HTTPS itself
+# (Enforce HTTPS is on). See claude/site-review-beyond-seo for the options.
+
 /*
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

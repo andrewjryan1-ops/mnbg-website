@@ -2,7 +2,7 @@
 
 Professional B2B website for MN Bookkeeping Guy (founded by Paul Mansur, CPA), built as a fast, dependency‑free static site and styled to the v1.0 brand guidelines.
 
-**Target URL:** https://MNBG.RyanCont.com
+**Live URL:** https://mnbookkeepingguys.com (GitHub Pages, branch `main`, root; `CNAME` file sets the domain)
 
 ---
 
