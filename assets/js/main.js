@@ -13,14 +13,43 @@
     });
   }
 
-  // Mobile dropdown expand (tap the toggle within a dropdown li)
+  // Dropdowns: tap to expand on mobile, and keep aria-expanded truthful on
+  // every device so screen readers announce the open/closed state. On desktop
+  // the menu is opened by CSS (:hover / :focus-within), so mirror those here.
   document.querySelectorAll(".nav-links .dropdown-toggle").forEach(function (btn) {
+    var li = btn.closest("li");
+    if (!li) return;
+
+    function setExpanded(open) { btn.setAttribute("aria-expanded", open ? "true" : "false"); }
+    var isMobile = function () { return window.matchMedia("(max-width: 760px)").matches; };
+
     btn.addEventListener("click", function (e) {
-      if (window.matchMedia("(max-width: 760px)").matches) {
+      if (isMobile()) {
         e.preventDefault();
-        var li = btn.closest("li");
-        if (li) li.classList.toggle("open");
+        li.classList.toggle("open");
+        setExpanded(li.classList.contains("open"));
       }
+    });
+
+    ["mouseenter", "focusin"].forEach(function (ev) {
+      li.addEventListener(ev, function () { if (!isMobile()) setExpanded(true); });
+    });
+    ["mouseleave", "focusout"].forEach(function (ev) {
+      li.addEventListener(ev, function () {
+        if (isMobile()) return;
+        // focusout fires before focus lands on the next element
+        setTimeout(function () {
+          if (!li.contains(document.activeElement) && !li.matches(":hover")) setExpanded(false);
+        }, 0);
+      });
+    });
+
+    // Escape closes an open menu and returns focus to its toggle
+    li.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      li.classList.remove("open");
+      setExpanded(false);
+      btn.focus();
     });
   });
 
