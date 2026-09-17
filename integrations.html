@@ -110,6 +110,7 @@
 }</script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <header class="site-header">
   <nav class="nav container" aria-label="Primary">
@@ -117,11 +118,11 @@
       <img src="assets/img/logo-140.webp" alt="MN Bookkeeping Guy logo" width="46" height="46" />
       <span><b>MN Bookkeeping Guy</b>Small Business Bookkeeping</span>
     </a>
-    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <ul class="nav-links">
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="primary-menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="primary-menu">
       <li><a href="/about">About Us</a></li>
       <li>
-        <a href="/services" class="dropdown-toggle" aria-haspopup="true">Services ▾</a>
+        <a href="/services" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Services ▾</a>
         <ul class="dropdown-menu">
           <li class="group-label">What we do</li>
           <li><a href="/services">Bookkeeping Services</a></li>
@@ -131,7 +132,7 @@
         </ul>
       </li>
       <li>
-        <button class="dropdown-toggle" aria-haspopup="true">Integrations ▾</button>
+        <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Integrations ▾</button>
         <ul class="dropdown-menu">
           <li class="group-label">QuickBooks</li>
           <li><a href="/integrations#quickbooks">QuickBooks Online</a></li>
@@ -150,7 +151,7 @@
   </nav>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
   <section class="page-head">
     <div class="container">
       <p class="crumb"><a href="/">Home</a> / Integrations</p>
@@ -251,7 +252,7 @@
         <p style="color:#79B26B;font-weight:700;">Practical. Personal. Dependable.</p>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="footer-head">Services</h2>
         <ul>
           <li><a href="/services">Bookkeeping Services</a></li>
           <li><a href="/controller-services">Controller &amp; Month-End Close</a></li>
@@ -261,7 +262,7 @@
         </ul>
       </div>
       <div>
-        <h4>Company</h4>
+        <h2 class="footer-head">Company</h2>
         <ul>
           <li><a href="/about">About Us</a></li>
           <li><a href="/blog">Blog</a></li>
@@ -271,7 +272,7 @@
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="footer-head">Contact</h2>
         <ul>
           <li><a href="/contact">Contact Us</a></li>
           <li><a href="tel:+16517570515">651-757-0515</a></li>
@@ -281,7 +282,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; <span id="year">2026</span> MN Bookkeeping Guy. All rights reserved.</span>
+      <span>&copy; <span id="year">2026</span> MN Bookkeeping Guy. All rights reserved. &middot; <a href="/privacy">Privacy Policy</a></span>
       <span>Founded by Paul Mansur, CPA (Inactive) &middot; Minnesota</span>
     </div>
   </div>
