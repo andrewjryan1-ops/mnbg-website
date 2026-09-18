@@ -190,7 +190,12 @@
       <h2>Send us a message</h2>
       <p>Name and email are the only things we need. Everything else just helps us give you a useful answer the first time instead of the third.</p>
       <div class="form-embed">
-        <iframe title="Contact form for MN Bookkeeping Guy" src="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=SOTgc7xXXE6ncFSHEmqFT42gXuvYCXRGpynPgIKnqm5UQU9NNVhOSDRFU1ZEQVlYNU1INDhQTEdIWi4u&amp;embed=true" loading="lazy" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen></iframe>
+        <!-- width/height are presentational hints, so the stylesheet's .form-embed
+             iframe rules (including the mobile height) still win. They exist as a
+             fallback: without them an iframe with no CSS height collapses to the
+             browser default 300x150, which is what a visitor would see on the one
+             page that matters most if styles.css were stale or failed to load. -->
+        <iframe title="Contact form for MN Bookkeeping Guy" src="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=SOTgc7xXXE6ncFSHEmqFT42gXuvYCXRGpynPgIKnqm5UQU9NNVhOSDRFU1ZEQVlYNU1INDhQTEdIWi4u&amp;embed=true" width="100%" height="1780" loading="lazy" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen></iframe>
       </div>
       <p class="form-note mt-2">Form not loading? <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=SOTgc7xXXE6ncFSHEmqFT42gXuvYCXRGpynPgIKnqm5UQU9NNVhOSDRFU1ZEQVlYNU1INDhQTEdIWi4u" target="_blank" rel="noopener">Open it in a new tab</a>, email <a href="mailto:Info@MNBookkeepingGuy.com">Info@MNBookkeepingGuy.com</a>, or call <a href="tel:+16517570515">651-757-0515</a>. The form is hosted by Microsoft Forms — see our <a href="/privacy">privacy policy</a> for what that means.</p>
     </div>
