@@ -185,6 +185,23 @@ p { margin: 0 0 1rem; }
 }
 .card .icon svg { width: 26px; height: 26px; }
 
+/* Brand marks (integrations page) --------------------------------------------- */
+/* Each glyph identifies a product we work in, drawn in that brand's own published */
+/* colour passed in as --brand. They are decorative -- the product name is always */
+/* in the heading beside them -- so they carry aria-hidden and are exempt from */
+/* contrast minimums (WCAG 1.4.11 excludes logotypes). The fixed-height rail lets */
+/* marks of very different aspect ratios (a 1:1 symbol next to a 6:1 wordmark) sit */
+/* on a common centre line across a row of cards. */
+.brandmark { display: flex; align-items: center; height: 34px; margin-bottom: .55rem; }
+.brandmark svg { fill: var(--brand, currentColor); display: block; }
+/* Brands with no mark keep the space so headings stay on one baseline. */
+.brandmark--none { display: block; height: 34px; }
+/* Below 760px every card grid is one column, so there is no row left to align to */
+/* and the reserved space is just a gap. At 980px a 4-up grid becomes 2-up and the */
+/* placeholder is still doing work, so this applies only here. */
+@media (max-width: 760px) { .brandmark--none { display: none; } }
+.trademark-note { color: var(--muted); font-size: .85rem; line-height: 1.6; max-width: 70ch; margin-top: 2rem; }
+
 .card--accent { border-top: 4px solid var(--fresh-green); }
 
 /* Service list cards */
